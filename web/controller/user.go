@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"bj39/web/model"
 	getCaptcha "bj39/web/proto"
 	"bj39/web/utils"
 	"context"
@@ -12,7 +13,9 @@ import (
 	"github.com/asim/go-micro/v3/registry"
 	"github.com/gin-gonic/gin"
 	"image/png"
+	"math/rand"
 	"net/http"
+	"time"
 )
 
 func GetSession(ctx *gin.Context) {
@@ -55,4 +58,45 @@ func GetImageCd(ctx *gin.Context) {
 	png.Encode(ctx.Writer, img)
 
 	fmt.Println("uuid = ", uuid)
+}
+
+// 获取短信验证码
+func GetSmscd(ctx *gin.Context) {
+	// 获取短信验证码
+	phone := ctx.Param("phone")
+	// 拆分GET请求中的URL格式
+	imgCode := ctx.Query("text")
+	uuid := ctx.Query("id")
+
+	fmt.Println(phone, imgCode, uuid)
+
+	// 校验图片验证码 是否正确
+	result := model.CheckImgCode(uuid, imgCode)
+	// 创建容器 存储返回的数据信息
+	resp := make(map[string]string)
+	if result {
+		// 模拟发送短息
+		// 生成一个随机6位数 做验证码
+		rand.Seed(time.Now().UnixNano())
+		smsCode := fmt.Sprintf("%06d", rand.Int31n(1000000))
+		fmt.Printf("验证码: %s\n", smsCode)
+
+		// 发送短信验证码成功
+		resp["errno"] = utils.RECODE_OK
+		resp["errmsg"] = utils.RecodeText(utils.RECODE_OK)
+
+		// 将 电话号:短信验证码 存入到redis数据库中
+		err := model.SaveSmsCode(phone, smsCode)
+		if err != nil {
+			fmt.Println("存储短信验证码到redis失败:", err)
+			resp["errno"] = utils.RECODE_DBERR
+			resp["errmsg"] = utils.RecodeText(utils.RECODE_DBERR)
+		}
+	} else {
+		// 校验失败 发送错误信息
+		resp["errno"] = utils.RECODE_DATAERR
+		resp["errmsg"] = utils.RecodeText(utils.RECODE_DATAERR)
+	}
+	// 发送成功/失败 结果
+	ctx.JSON(http.StatusOK, resp)
 }

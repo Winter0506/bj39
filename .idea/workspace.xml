@@ -1,23 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="98da9409-0d44-4669-b724-c0ffa0fc8ede" name="Default Changelist" comment="基础代码,有错">
-      <change afterPath="$PROJECT_DIR$/service/getCaptcha/model/modelFunc.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/test/redisTest.go" afterDir="false" />
+    <list default="true" id="98da9409-0d44-4669-b724-c0ffa0fc8ede" name="Default Changelist" comment="在micro.go里面改asim,注意服务名">
+      <change afterPath="$PROJECT_DIR$/web/model/modelFun.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/getCaptcha/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/service/getCaptcha/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/getCaptcha/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/service/getCaptcha/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/getCaptcha/handler/getCaptcha.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/getCaptcha/handler/getCaptcha.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/getCaptcha/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/getCaptcha/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/getCaptcha/proto/getCaptcha.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/getCaptcha/proto/getCaptcha.pb.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/getCaptcha/proto/getCaptcha.pb.micro.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/getCaptcha/proto/getCaptcha.pb.micro.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/getCaptcha/proto/getCaptcha.proto" beforeDir="false" afterPath="$PROJECT_DIR$/service/getCaptcha/proto/getCaptcha.proto" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/controller/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/web/controller/user.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/web/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/web/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/proto/getCaptcha.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/web/proto/getCaptcha.pb.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/proto/getCaptcha.pb.micro.go" beforeDir="false" afterPath="$PROJECT_DIR$/web/proto/getCaptcha.pb.micro.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/proto/getCaptcha.proto" beforeDir="false" afterPath="$PROJECT_DIR$/web/proto/getCaptcha.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/web/main.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,7 +92,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="基础代码,有错" />
-    <option name="LAST_COMMIT_MESSAGE" value="基础代码,有错" />
+    <MESSAGE value="在micro.go里面改asim,注意服务名" />
+    <option name="LAST_COMMIT_MESSAGE" value="在micro.go里面改asim,注意服务名" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
