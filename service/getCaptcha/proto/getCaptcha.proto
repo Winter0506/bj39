@@ -12,6 +12,7 @@ service GetCaptcha {
 
 
 message Request {
+	string uuid = 1;
 }
 
 message Response {

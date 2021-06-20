@@ -33,13 +33,15 @@ func GetImageCd(ctx *gin.Context) {
 	})
 	service := micro.NewService(
 		micro.Registry(reg),
+		micro.Name("GetCaptcha"),
+		micro.Version("latest"),
 	)
 
 	// 初始化客户端
-	microClient := getCaptcha.NewGetCaptchaService("getCaptcha", service.Client())
+	microClient := getCaptcha.NewGetCaptchaService("GetCaptcha", service.Client())
 
 	// 调用远程函数
-	resp, err := microClient.Call(context.TODO(), &getCaptcha.Request{})
+	resp, err := microClient.Call(context.TODO(), &getCaptcha.Request{Uuid: uuid})
 	if err != nil {
 		fmt.Println("未找到远程服务...")
 		return

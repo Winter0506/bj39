@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"encoding/json"
+	"getCaptcha/model"
 	getCaptcha "getCaptcha/proto"
 	"github.com/afocus/captcha"
 	"image/color"
@@ -33,8 +34,12 @@ func (e *GetCaptcha) Call(ctx context.Context, req *getCaptcha.Request, rsp *get
 	cap.SetBkgColor(color.RGBA{100, 0, 255, 255}, color.RGBA{255, 0, 127, 255}, color.RGBA{255, 255, 10, 255})
 
 	// 生成字体
-	img, _ := cap.Create(4, captcha.NUM)
-
+	img, str := cap.Create(4, captcha.NUM)
+	// 存储图片验证码到redis中
+	err := model.SaveImgCode(str, req.Uuid)
+	if err != nil {
+		return err
+	}
 	// 将 生成成的图片 序列化.
 	imgBuf, _ := json.Marshal(img)
 

@@ -1,7 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="98da9409-0d44-4669-b724-c0ffa0fc8ede" name="Default Changelist" comment="" />
+    <list default="true" id="98da9409-0d44-4669-b724-c0ffa0fc8ede" name="Default Changelist" comment="基础代码,有错">
+      <change afterPath="$PROJECT_DIR$/service/getCaptcha/model/modelFunc.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/test/redisTest.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/getCaptcha/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/service/getCaptcha/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/getCaptcha/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/service/getCaptcha/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/getCaptcha/handler/getCaptcha.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/getCaptcha/handler/getCaptcha.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/getCaptcha/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/getCaptcha/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/getCaptcha/proto/getCaptcha.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/getCaptcha/proto/getCaptcha.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/getCaptcha/proto/getCaptcha.pb.micro.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/getCaptcha/proto/getCaptcha.pb.micro.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/getCaptcha/proto/getCaptcha.proto" beforeDir="false" afterPath="$PROJECT_DIR$/service/getCaptcha/proto/getCaptcha.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/controller/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/web/controller/user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/web/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/web/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/proto/getCaptcha.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/web/proto/getCaptcha.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/proto/getCaptcha.pb.micro.go" beforeDir="false" afterPath="$PROJECT_DIR$/web/proto/getCaptcha.pb.micro.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/proto/getCaptcha.proto" beforeDir="false" afterPath="$PROJECT_DIR$/web/proto/getCaptcha.proto" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -15,7 +32,11 @@
     </option>
   </component>
   <component name="GOROOT" url="file://$PROJECT_DIR$/../../../GOROOT" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1u4qtiyNWsqw2udjfdN9DN6dQdx" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -38,15 +59,29 @@
       <recent name="D:\Go\GOPATH\src\bj39" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Go Build.go build bj39/web/">
+    <configuration name="go build bj39/web/" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true">
+      <module name="bj39" />
+      <working_directory value="$PROJECT_DIR$/web" />
+      <kind value="PACKAGE" />
+      <filePath value="$PROJECT_DIR$/web/add.go" />
+      <package value="bj39/web" />
+      <directory value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
     <configuration name="proto" type="MAKEFILE_TARGET_RUN_CONFIGURATION" factoryName="Makefile" temporary="true">
       <makefile filename="$PROJECT_DIR$/service/getCaptcha/Makefile" target="proto" workingDirectory="" arguments="">
         <envs />
       </makefile>
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Go Build.go build bj39/web/" />
+      <item itemvalue="Makefile.proto" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Go Build.go build bj39/web/" />
         <item itemvalue="Makefile.proto" />
       </list>
     </recent_temporary>
@@ -54,6 +89,22 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="基础代码,有错" />
+    <option name="LAST_COMMIT_MESSAGE" value="基础代码,有错" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>

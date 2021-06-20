@@ -5,24 +5,25 @@ import (
 	pb "getCaptcha/proto"
 	"github.com/asim/go-micro/plugins/registry/consul/v3"
 	"github.com/asim/go-micro/v3"
-	"github.com/asim/go-micro/v3/registry"
-	"github.com/asim/go-micro/v3/util/log"
+	"github.com/asim/go-micro/v3/logger"
 )
 
 func main() {
 	// Register consul
-	reg := consul.NewRegistry(func(options *registry.Options) {
-		options.Addrs = []string{"127.0.0.1:8500"}
-	})
+	reg := consul.NewRegistry()
 	service := micro.NewService(
 		micro.Registry(reg),
+		micro.Name("GetCaptcha"),
+		micro.Version("latest"),
 	)
 
 	// Register Handler
-	pb.RegisterGetCaptchaHandler(service.Server(), new(handler.GetCaptcha))
+	if err := pb.RegisterGetCaptchaHandler(service.Server(), new(handler.GetCaptcha)); err != nil {
+		logger.Fatal(err)
+	}
 
 	// Run service
 	if err := service.Run(); err != nil {
-		log.Fatal(err)
+		logger.Fatal(err)
 	}
 }
