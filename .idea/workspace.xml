@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="98da9409-0d44-4669-b724-c0ffa0fc8ede" name="Default Changelist" comment="在micro.go里面改asim,注意服务名">
-      <change afterPath="$PROJECT_DIR$/web/model/modelFun.go" afterDir="false" />
+    <list default="true" id="98da9409-0d44-4669-b724-c0ffa0fc8ede" name="Default Changelist" comment="创建新服务user">
+      <change afterPath="$PROJECT_DIR$/service/user/go.sum" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/service/user/model/modelFun.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/service/user/proto/user.pb.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/service/user/proto/user.pb.micro.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/service/user/utils/error.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/controller/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/web/controller/user.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/web/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/user/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/service/user/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/user/handler/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/user/handler/user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/user/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/user/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/user/proto/user.proto" beforeDir="false" afterPath="$PROJECT_DIR$/service/user/proto/user.proto" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,12 +30,15 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1u4qtiyNWsqw2udjfdN9DN6dQdx" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="DefaultGoTemplateProperty" value="Go File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
@@ -37,10 +46,11 @@
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
     <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/web" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/service/user" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Go\GOPATH\src\bj39\service\user" />
       <recent name="D:\Go\GOPATH\src\bj39\web" />
       <recent name="D:\Go\GOPATH\src\bj39\service\getCaptcha" />
       <recent name="D:\Go\GOPATH\src\bj39\web\conf" />
@@ -91,9 +101,11 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="基础代码,有错" />
     <MESSAGE value="在micro.go里面改asim,注意服务名" />
-    <option name="LAST_COMMIT_MESSAGE" value="在micro.go里面改asim,注意服务名" />
+    <MESSAGE value="创建新服务user" />
+    <option name="LAST_COMMIT_MESSAGE" value="创建新服务user" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>

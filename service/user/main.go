@@ -1,22 +1,26 @@
 package main
 
 import (
+	"github.com/asim/go-micro/plugins/registry/consul/v3"
+	"github.com/asim/go-micro/v3"
+	"github.com/asim/go-micro/v3/logger"
 	"user/handler"
 	pb "user/proto"
-
-	"github.com/micro/micro/v3/service"
-	"github.com/micro/micro/v3/service/logger"
 )
 
 func main() {
-	// Create service
-	srv := service.New(
-		service.Name("user"),
-		service.Version("latest"),
+	// Register consul
+	reg := consul.NewRegistry()
+	srv := micro.NewService(
+		micro.Registry(reg),
+		micro.Name("User"),
+		micro.Version("latest"),
 	)
 
 	// Register handler
-	pb.RegisterUserHandler(srv.Server(), new(handler.User))
+	if err := pb.RegisterUserHandler(srv.Server(), new(handler.User)); err != nil {
+		logger.Fatal(err)
+	}
 
 	// Run service
 	if err := srv.Run(); err != nil {

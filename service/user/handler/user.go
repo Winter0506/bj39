@@ -2,8 +2,11 @@ package handler
 
 import (
 	"context"
-
-	log "github.com/micro/micro/v3/service/logger"
+	"fmt"
+	"math/rand"
+	"time"
+	"user/model"
+	"user/utils"
 
 	user "user/proto"
 )
@@ -11,38 +14,34 @@ import (
 type User struct{}
 
 // Call is a single request handler called via client.Call or the generated client code
-func (e *User) Call(ctx context.Context, req *user.Request, rsp *user.Response) error {
-	log.Info("Received User.Call request")
-	rsp.Msg = "Hello " + req.Name
-	return nil
-}
+func (e *User) SendSms(ctx context.Context, req *user.Request, rsp *user.Response) error {
 
-// Stream is a server side stream handler called via client.Stream or the generated client code
-func (e *User) Stream(ctx context.Context, req *user.StreamingRequest, stream user.User_StreamStream) error {
-	log.Infof("Received User.Stream request with count: %d", req.Count)
+	// 校验图片验证码 是否正确
+	result := model.CheckImgCode(req.Uuid, req.ImgCode)
+	// 创建容器 存储返回的数据信息
+	// resp := make(map[string]string)
+	if result {
+		// 模拟发送短息
+		// 生成一个随机6位数 做验证码
+		rand.Seed(time.Now().UnixNano())
+		smsCode := fmt.Sprintf("%06d", rand.Int31n(1000000))
+		fmt.Printf("验证码: %s\n", smsCode)
 
-	for i := 0; i < int(req.Count); i++ {
-		log.Infof("Responding: %d", i)
-		if err := stream.Send(&user.StreamingResponse{
-			Count: int64(i),
-		}); err != nil {
-			return err
-		}
-	}
+		// 发送短信验证码成功
+		rsp.Errno = utils.RECODE_OK
+		rsp.Errmsg = utils.RecodeText(utils.RECODE_OK)
 
-	return nil
-}
-
-// PingPong is a bidirectional stream handler called via client.Stream or the generated client code
-func (e *User) PingPong(ctx context.Context, stream user.User_PingPongStream) error {
-	for {
-		req, err := stream.Recv()
+		// 将 电话号:短信验证码 存入到redis数据库中
+		err := model.SaveSmsCode(req.Phone, smsCode)
 		if err != nil {
-			return err
+			fmt.Println("存储短信验证码到redis失败:", err)
+			rsp.Errno = utils.RECODE_DBERR
+			rsp.Errmsg = utils.RecodeText(utils.RECODE_DBERR)
 		}
-		log.Infof("Got ping %v", req.Stroke)
-		if err := stream.Send(&user.Pong{Stroke: req.Stroke}); err != nil {
-			return err
-		}
+	} else {
+		// 校验失败 发送错误信息
+		rsp.Errno = utils.RECODE_DATAERR
+		rsp.Errmsg = utils.RecodeText(utils.RECODE_DATAERR)
 	}
+	return nil
 }
