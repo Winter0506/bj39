@@ -5,10 +5,13 @@ import (
 	"github.com/asim/go-micro/v3"
 	"github.com/asim/go-micro/v3/logger"
 	"user/handler"
+	"user/model"
 	pb "user/proto"
 )
 
 func main() {
+	// 初始化连接池
+	model.InitRedis()
 	// Register consul
 	reg := consul.NewRegistry()
 	srv := micro.NewService(

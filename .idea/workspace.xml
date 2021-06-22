@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="98da9409-0d44-4669-b724-c0ffa0fc8ede" name="Default Changelist" comment="创建新服务user">
-      <change afterPath="$PROJECT_DIR$/service/user/go.sum" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service/user/model/modelFun.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service/user/proto/user.pb.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service/user/proto/user.pb.micro.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service/user/utils/error.go" afterDir="false" />
+    <list default="true" id="98da9409-0d44-4669-b724-c0ffa0fc8ede" name="Default Changelist" comment="将验证码整合进user的基础代码">
+      <change afterPath="$PROJECT_DIR$/web/proto/user/user.pb.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/proto/user/user.pb.micro.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/proto/user/user.proto" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/test/gormTest.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/user/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/service/user/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/user/handler/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/user/handler/user.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/service/user/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/user/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/user/proto/user.proto" beforeDir="false" afterPath="$PROJECT_DIR$/service/user/proto/user.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/controller/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/web/controller/user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/web/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/web/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/web/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/proto/getCaptcha.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/web/proto/getCaptcha/getCaptcha.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/proto/getCaptcha.pb.micro.go" beforeDir="false" afterPath="$PROJECT_DIR$/web/proto/getCaptcha/getCaptcha.pb.micro.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/proto/getCaptcha.proto" beforeDir="false" afterPath="$PROJECT_DIR$/web/proto/getCaptcha/getCaptcha.proto" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,15 +49,18 @@
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
     <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/service/user" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/web/proto/getCaptcha" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Go\GOPATH\src\bj39\web\proto\getCaptcha" />
+      <recent name="D:\Go\GOPATH\src\bj39\web\proto" />
       <recent name="D:\Go\GOPATH\src\bj39\service\user" />
       <recent name="D:\Go\GOPATH\src\bj39\web" />
       <recent name="D:\Go\GOPATH\src\bj39\service\getCaptcha" />
-      <recent name="D:\Go\GOPATH\src\bj39\web\conf" />
-      <recent name="D:\Go\GOPATH\src\bj39" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Go\GOPATH\src\bj39\web\proto\user" />
     </key>
   </component>
   <component name="RunManager" selected="Go Build.go build bj39/web/">
@@ -105,7 +111,8 @@
     <MESSAGE value="基础代码,有错" />
     <MESSAGE value="在micro.go里面改asim,注意服务名" />
     <MESSAGE value="创建新服务user" />
-    <option name="LAST_COMMIT_MESSAGE" value="创建新服务user" />
+    <MESSAGE value="将验证码整合进user的基础代码" />
+    <option name="LAST_COMMIT_MESSAGE" value="将验证码整合进user的基础代码" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>

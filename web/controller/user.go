@@ -1,8 +1,8 @@
 package controller
 
 import (
-	"bj39/web/model"
-	getCaptcha "bj39/web/proto"
+	"bj39/web/proto/getCaptcha"
+	"bj39/web/proto/user"
 	"bj39/web/utils"
 	"context"
 	"encoding/json"
@@ -13,9 +13,7 @@ import (
 	"github.com/asim/go-micro/v3/registry"
 	"github.com/gin-gonic/gin"
 	"image/png"
-	"math/rand"
 	"net/http"
-	"time"
 )
 
 func GetSession(ctx *gin.Context) {
@@ -46,7 +44,7 @@ func GetImageCd(ctx *gin.Context) {
 	// 调用远程函数
 	resp, err := microClient.Call(context.TODO(), &getCaptcha.Request{Uuid: uuid})
 	if err != nil {
-		fmt.Println("未找到远程服务...")
+		fmt.Println("未找到getCaptcha远程服务...")
 		return
 	}
 
@@ -62,6 +60,38 @@ func GetImageCd(ctx *gin.Context) {
 
 // 获取短信验证码
 func GetSmscd(ctx *gin.Context) {
+	// 获取短信验证码
+	phone := ctx.Param("phone")
+	// 拆分GET请求中的URL格式
+	imgCode := ctx.Query("text")
+	uuid := ctx.Query("id")
+
+	fmt.Println(phone, imgCode, uuid)
+	// Register consul
+	reg := consul.NewRegistry(func(options *registry.Options) {
+		options.Addrs = []string{"127.0.0.1:8500"}
+	})
+	service := micro.NewService(
+		micro.Registry(reg),
+		micro.Name("User"),
+		micro.Version("latest"),
+	)
+
+	// 初始化客户端
+	microClient := user.NewUserService("User", service.Client())
+
+	// 调用远程函数
+	resp, err := microClient.SendSms(context.TODO(), &user.Request{Phone: phone, ImgCode: imgCode, Uuid: uuid})
+	if err != nil {
+		fmt.Println("未找到User远程服务...")
+		return
+	}
+
+	// 发送成功/失败 结果
+	ctx.JSON(http.StatusOK, resp)
+}
+
+/*func GetSmscd(ctx *gin.Context) {
 	// 获取短信验证码
 	phone := ctx.Param("phone")
 	// 拆分GET请求中的URL格式
@@ -99,4 +129,16 @@ func GetSmscd(ctx *gin.Context) {
 	}
 	// 发送成功/失败 结果
 	ctx.JSON(http.StatusOK, resp)
+}*/
+
+// 发送注册信息
+func PostRet(ctx *gin.Context) {
+	// 获取数据
+	var regData struct {
+		Mobile   string `json:"mobile"`
+		PassWord string `json:"password"`
+		SmsCode  string `json:"sms_code"`
+	}
+	ctx.Bind(&regData)
+	fmt.Println("获取到的数据为:", regData)
 }

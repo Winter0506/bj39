@@ -29,6 +29,7 @@ func main() {
 		r1.GET("/session", controller.GetSession)
 		r1.GET("/imagecode/:uuid", controller.GetImageCd)
 		r1.GET("/smscode/:phone", controller.GetSmscd)
+		r1.POST("/users", controller.PostRet)
 	}
 
 	// 启动运行
