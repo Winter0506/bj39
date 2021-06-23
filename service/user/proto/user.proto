@@ -3,9 +3,16 @@ syntax = "proto3";
 package user;
 
 option go_package = "./;user";
-
+// protoc  --micro_out=. --go_out=:./ user.proto
 service User {
-	rpc SendSms(Request) returns (Response) {}
+	rpc SendSms(Request) returns (Response) {};
+	rpc Register(RegReq) returns (Response) {};
+}
+
+message RegReq {
+	string mobile = 1;
+	string password = 2;
+	string sms_code = 3;
 }
 
 message Request {

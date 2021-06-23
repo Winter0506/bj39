@@ -45,3 +45,24 @@ func (e *User) SendSms(ctx context.Context, req *user.Request, rsp *user.Respons
 	}
 	return nil
 }
+
+func (e *User) Register(ctx context.Context, req *user.RegReq, rsp *user.Response) error {
+	// 校验短信验证码是否正确，redis中存储短信校验码
+	err := model.CheckSmsCode(req.Mobile, req.SmsCode)
+	if err == nil {
+		// 如果校验正确,注册用户 将数据写入到mysql数据库
+		err = model.RegisterUser(req.Mobile, req.Password)
+		if err != nil {
+			rsp.Errno = utils.RECODE_DBERR
+			rsp.Errmsg = utils.RecodeText(utils.RECODE_DBERR)
+		} else {
+			rsp.Errno = utils.RECODE_OK
+			rsp.Errmsg = utils.RecodeText(utils.RECODE_OK)
+		}
+
+	} else { // 短信验证码错误
+		rsp.Errno = utils.RECODE_DATAERR
+		rsp.Errmsg = utils.RecodeText(utils.RECODE_DATAERR)
+	}
+	return nil
+}

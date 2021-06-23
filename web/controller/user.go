@@ -28,6 +28,7 @@ func GetSession(ctx *gin.Context) {
 
 func GetImageCd(ctx *gin.Context) {
 	uuid := ctx.Param("uuid")
+	fmt.Println(uuid)
 	// Register consul
 	reg := consul.NewRegistry(func(options *registry.Options) {
 		options.Addrs = []string{"127.0.0.1:8500"}
@@ -43,6 +44,7 @@ func GetImageCd(ctx *gin.Context) {
 
 	// 调用远程函数
 	resp, err := microClient.Call(context.TODO(), &getCaptcha.Request{Uuid: uuid})
+	// fmt.Println(resp)
 	if err != nil {
 		fmt.Println("未找到getCaptcha远程服务...")
 		return
@@ -58,6 +60,8 @@ func GetImageCd(ctx *gin.Context) {
 	fmt.Println("uuid = ", uuid)
 }
 
+var microClient user.UserService
+
 // 获取短信验证码
 func GetSmscd(ctx *gin.Context) {
 	// 获取短信验证码
@@ -67,19 +71,8 @@ func GetSmscd(ctx *gin.Context) {
 	uuid := ctx.Query("id")
 
 	fmt.Println(phone, imgCode, uuid)
-	// Register consul
-	reg := consul.NewRegistry(func(options *registry.Options) {
-		options.Addrs = []string{"127.0.0.1:8500"}
-	})
-	service := micro.NewService(
-		micro.Registry(reg),
-		micro.Name("User"),
-		micro.Version("latest"),
-	)
 
-	// 初始化客户端
-	microClient := user.NewUserService("User", service.Client())
-
+	microClient = utils.InitMicro()
 	// 调用远程函数
 	resp, err := microClient.SendSms(context.TODO(), &user.Request{Phone: phone, ImgCode: imgCode, Uuid: uuid})
 	if err != nil {
@@ -140,5 +133,32 @@ func PostRet(ctx *gin.Context) {
 		SmsCode  string `json:"sms_code"`
 	}
 	ctx.Bind(&regData)
-	fmt.Println("获取到的数据为:", regData)
+	// fmt.Println("获取到的数据为:", regData)
+
+	// 初始化consul
+	// Register consul
+	/*reg := consul.NewRegistry(func(options *registry.Options) {
+		options.Addrs = []string{"127.0.0.1:8500"}
+	})
+	service := micro.NewService(
+		micro.Registry(reg),
+		micro.Name("User"),
+		micro.Version("latest"),
+	)
+
+	// 初始化客户端
+	microClient := user.NewUserService("User", service.Client())*/
+
+	// 调用远程函数
+	resp, err := microClient.Register(context.TODO(), &user.RegReq{
+		Mobile:   regData.Mobile,
+		SmsCode:  regData.SmsCode,
+		Password: regData.PassWord,
+	})
+	if err != nil {
+		fmt.Println("注册用户,找不到远程服务!", err)
+		return
+	}
+	// 写给浏览器
+	ctx.JSON(http.StatusOK, resp)
 }

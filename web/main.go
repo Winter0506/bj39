@@ -10,6 +10,7 @@ import (
 func main() {
 
 	model.InitRedis()
+	model.InitDB()
 
 	// 初始化路由
 	router := gin.Default()

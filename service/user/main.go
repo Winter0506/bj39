@@ -10,6 +10,8 @@ import (
 )
 
 func main() {
+	// 初始化 MySQL 连接池
+	model.InitDB()
 	// 初始化连接池
 	model.InitRedis()
 	// Register consul

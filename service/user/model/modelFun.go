@@ -1,6 +1,9 @@
 package model
 
 import (
+	"crypto/md5"
+	"encoding/hex"
+	"errors"
 	"fmt"
 	"github.com/gomodule/redigo/redis"
 )
@@ -50,4 +53,37 @@ func SaveSmsCode(phone, code string) error {
 	// 存储短信验证码到redis中
 	_, err := conn.Do("setex", phone+"_code", 60*3, code)
 	return err
+}
+
+// 校验短信验证码 --redis
+func CheckSmsCode(phone, code string) error {
+	// 链接redis
+	conn := RedisPool.Get()
+	// 从redis中, 根据key获取Value
+	smsCode, err := redis.String(conn.Do("get", phone+"_code"))
+	if err != nil {
+		fmt.Println("redis get phone_code err:", err)
+		return err
+	}
+	// 验证码匹配
+	if smsCode != code {
+		return errors.New("验证码匹配失败!")
+	}
+	// 匹配成功
+	return nil
+}
+
+// 注册用户信息 写mysql数据库
+func RegisterUser(mobile, pwd string) error {
+	var user User
+	user.Name = mobile // 默认使用手机号作为用户名
+	// 使用md5对pwd加密
+	m5 := md5.New()                             // 初始md5对象
+	m5.Write([]byte(pwd))                       // 将pwd写入缓冲区
+	pwd_hash := hex.EncodeToString(m5.Sum(nil)) // 不使用额外的密钥
+
+	user.Password_hash = pwd_hash
+	// 插入数据到mysql
+	fmt.Println(user)
+	return GlobalConn.Create(&user).Error
 }
