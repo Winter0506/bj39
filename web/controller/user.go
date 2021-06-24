@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"bj39/web/model"
 	"bj39/web/proto/getCaptcha"
 	"bj39/web/proto/user"
 	"bj39/web/utils"
@@ -11,18 +12,46 @@ import (
 	"github.com/asim/go-micro/plugins/registry/consul/v3"
 	"github.com/asim/go-micro/v3"
 	"github.com/asim/go-micro/v3/registry"
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
+	"github.com/gomodule/redigo/redis"
 	"image/png"
 	"net/http"
 )
 
-func GetSession(ctx *gin.Context) {
+/*func GetSession(ctx *gin.Context) {
 	// 初始化错误返回的 map
 	resp := make(map[string]string)
 
 	resp["errno"] = utils.RECODE_SESSIONERR
 	resp["errmsg"] = utils.RecodeText(utils.RECODE_SESSIONERR)
 
+	ctx.JSON(http.StatusOK, resp)
+}*/
+
+// 获取session信息
+func GetSession(ctx *gin.Context) {
+	resp := make(map[string]interface{})
+
+	// 获取Session数据
+	s := sessions.Default(ctx) // 初始化Session对象
+	userName := s.Get("userName")
+
+	// 用户没有目录 ---没存在MySQL中, 也没存在Session中
+	if userName == nil {
+		resp["errno"] = utils.RECODE_SESSIONERR
+		resp["errmsg"] = utils.RecodeText(utils.RECODE_SESSIONERR)
+	} else {
+		resp["errno"] = utils.RECODE_OK
+		resp["errmsg"] = utils.RecodeText(utils.RECODE_OK)
+
+		// 键是name 值是 姓名
+		var nameData struct {
+			Name string `json:"name"`
+		}
+		nameData.Name = userName.(string) // 类型断言
+		resp["data"] = nameData
+	}
 	ctx.JSON(http.StatusOK, resp)
 }
 
@@ -161,4 +190,171 @@ func PostRet(ctx *gin.Context) {
 	}
 	// 写给浏览器
 	ctx.JSON(http.StatusOK, resp)
+}
+
+// 获取地域信息
+func GetArea(ctx *gin.Context) {
+	// 先从mysql中获取链接
+	var areas []model.Area
+
+	// 从缓存redis中, 获取数据
+	conn := model.RedisPool.Get()
+	// 当初使用“字节切片”存入 现在使用切片类型接收
+	areaData, _ := redis.Bytes(conn.Do("get", "areaData"))
+	// 没有从redis中获取到数据
+	if len(areaData) == 0 {
+		fmt.Println("从MySQL中获取数据...")
+		model.GlobalConn.Find(&areas)
+		// 把数据写入到redis中, 存储结构体序列化吼的json串
+		areaBuf, _ := json.Marshal(areas)
+		conn.Do("set", "areaData", areaBuf)
+	} else {
+		fmt.Println("从redis中获取数据...")
+		// redis中有数据
+		json.Unmarshal(areaData, &areas)
+	}
+
+	/*model.GlobalConn.Find(&areas)
+
+	// 再把数据写入到redis中
+	conn := model.RedisPool.Get()  // 获取链接
+	conn.Do("set", "areaData", areas)*/
+
+	resp := make(map[string]interface{})
+
+	resp["errno"] = "0"
+	resp["errmsg"] = utils.RecodeText(utils.RECODE_OK)
+	resp["data"] = areas
+
+	ctx.JSON(http.StatusOK, resp)
+}
+
+// 处理登录业务
+func PostLogin(ctx *gin.Context) {
+	// 获取前端数据
+	var loginData struct {
+		Mobile   string `json:"mobile"`
+		PassWord string `json:"password"`
+	}
+	ctx.Bind(&loginData)
+
+	resp := make(map[string]interface{})
+
+	// 获取 数据库数据 查询是否和数据匹配
+	userName, err := model.Login(loginData.Mobile, loginData.PassWord)
+	if err == nil {
+		// 登录成功!
+		resp["errno"] = utils.RECODE_OK
+		resp["errmsg"] = utils.RecodeText(utils.RECODE_OK)
+
+		// 将登陆状态 保存到Session中
+		s := sessions.Default(ctx)  // 初始化session
+		s.Set("userName", userName) // 将用户名设置到session中
+		s.Save()
+
+	} else {
+		// 登录失败!
+		resp["errno"] = utils.RECODE_LOGINERR
+		resp["errmsg"] = utils.RecodeText(utils.RECODE_LOGINERR)
+	}
+
+	ctx.JSON(http.StatusOK, resp)
+}
+
+func DeleteSession(ctx *gin.Context) {
+	resp := make(map[string]interface{})
+
+	// 初始化 Session对象
+	s := sessions.Default(ctx)
+	// 删除Session数据
+	s.Delete("userName") // 没有返回值
+	// 必须使用Save保存
+	err := s.Save() // 有返回值
+
+	if err != nil {
+		resp["errno"] = utils.RECODE_IOERR // 没有合适错误,使用 IO 错误!
+		resp["errmsg"] = utils.RecodeText(utils.RECODE_IOERR)
+
+	} else {
+		resp["errno"] = utils.RECODE_OK
+		resp["errmsg"] = utils.RecodeText(utils.RECODE_OK)
+	}
+
+	ctx.JSON(http.StatusOK, resp)
+}
+
+// 获取用户基本信息
+func GetUserInfo(ctx *gin.Context) {
+	resp := make(map[string]interface{})
+
+	defer ctx.JSON(http.StatusOK, resp)
+
+	// 获取Session 得到当前用户信息
+	s := sessions.Default(ctx)
+	userName := s.Get("userName")
+
+	// 判断用户名是否存在
+	if userName == nil { // 用户没有登陆 但进入了该页面 恶意进入
+		resp["errno"] = utils.RECODE_SESSIONERR
+		resp["errmsg"] = utils.RecodeText(utils.RECODE_SESSIONERR)
+		return // 如果出错, 报错, 退出
+	}
+
+	// 根据用户名 获取用户信息  --- 查MySQL数据库user表
+	user, err := model.GetUserInfo(userName.(string))
+	if err != nil {
+		resp["errno"] = utils.RECODE_DBERR
+		resp["errmsg"] = utils.RecodeText(utils.RECODE_DBERR)
+		return // 如果出错, 报错, 退出
+	}
+
+	resp["errno"] = utils.RECODE_OK
+	resp["errmsg"] = utils.RecodeText(utils.RECODE_OK)
+
+	temp := make(map[string]interface{})
+	temp["user_id"] = user.ID
+	temp["name"] = user.Name
+	temp["mobile"] = user.Mobile
+	temp["real_name"] = user.Real_name
+	temp["id_card"] = user.Id_card
+	temp["avatar_url"] = user.Avatar_url
+
+	resp["data"] = temp
+}
+
+// 更新用户名
+func PutUserInfo(ctx *gin.Context) {
+	// 获取当前用户名
+	s := sessions.Default(ctx) // 初始化Session对象
+	userName := s.Get("userName")
+
+	// 获取新用户名  -- 处理Request Payload 类型数据 Bind()
+	var nameData struct {
+		Name string `json:"name"`
+	}
+	ctx.Bind(&nameData)
+
+	// 更新用户名
+	resp := make(map[string]interface{})
+	defer ctx.JSON(http.StatusOK, resp)
+
+	// 更新用户名
+	err := model.UpdateUserName(nameData.Name, userName.(string))
+	if err != nil {
+		resp["errno"] = utils.RECODE_DBERR
+		resp["errmsg"] = utils.RecodeText(utils.RECODE_DBERR)
+		return
+	}
+
+	// 更新Session数据
+	s.Set("userName", nameData.Name)
+	err = s.Save() // 必须保存
+	if err != nil {
+		resp["errno"] = utils.RECODE_SESSIONERR
+		resp["errmsg"] = utils.RecodeText(utils.RECODE_SESSIONERR)
+		return
+	}
+	resp["errno"] = utils.RECODE_OK
+	resp["errmsg"] = utils.RecodeText(utils.RECODE_OK)
+	resp["data"] = nameData
 }

@@ -7,11 +7,12 @@ require (
 	github.com/asim/go-micro/plugins/registry/consul/v3 v3.0.0-20210617101138-08216ccf3148
 	github.com/asim/go-micro/v3 v3.5.1
 	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
+	github.com/gin-contrib/sessions v0.0.3
 	github.com/gin-gonic/gin v1.7.2
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 // indirect
 	github.com/golang/protobuf v1.5.0
-	github.com/gomodule/redigo v1.8.5
+	github.com/gomodule/redigo v2.0.0+incompatible
 	github.com/google/uuid v1.1.2 // indirect
 	github.com/jinzhu/gorm v1.9.16
 	github.com/json-iterator/go v1.1.10 // indirect

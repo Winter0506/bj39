@@ -1,6 +1,8 @@
 package model
 
 import (
+	"crypto/md5"
+	"encoding/hex"
 	"fmt"
 	"github.com/gomodule/redigo/redis"
 )
@@ -50,4 +52,33 @@ func SaveSmsCode(phone, code string) error {
 	// 存储短信验证码到redis中
 	_, err := conn.Do("setex", phone+"_code", 60*3, code)
 	return err
+}
+
+// 处理登录业务 根据手机号/密码 获取用户名
+func Login(mobile, pwd string) (string, error) {
+	var user User
+	// 对参数pwd做md5 hash
+	m5 := md5.New()
+	m5.Write([]byte(pwd))
+	pwdHash := hex.EncodeToString(m5.Sum(nil))
+
+	err := GlobalConn.Select("name").Where("mobile = ?", mobile).
+		Where("password_hash = ?", pwdHash).Find(&user).Error
+
+	return user.Name, err
+}
+
+// 获取用户信息
+func GetUserInfo(userName string) (User, error) {
+	// 实现SQL: select * from user where name = userName;
+	var user User
+	err := GlobalConn.First(&user).Where("name = ?", userName).Error
+	return user, err
+}
+
+// 更新用户名
+func UpdateUserName(newName, oldName string) error {
+	// update user set name = 'itcast' where name = 旧用户名
+	return GlobalConn.Model(new(User)).Where("name = ?", oldName).
+		Update("name", newName).Error
 }
