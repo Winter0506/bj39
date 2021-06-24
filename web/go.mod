@@ -18,6 +18,7 @@ require (
 	github.com/json-iterator/go v1.1.10 // indirect
 	github.com/kr/pretty v0.2.0 // indirect
 	github.com/stretchr/testify v1.6.1 // indirect
+	github.com/tedcy/fdfs_client v0.0.0-20200106031142-21a04994525a
 	golang.org/x/crypto v0.0.0-20200709230013-948cd5f35899 // indirect
 	golang.org/x/image v0.0.0-20210607152325-775e3b0c77b9 // indirect
 	golang.org/x/sys v0.0.0-20200625212154-ddb9806d33ae // indirect
